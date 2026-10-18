@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Replace https://YOUR-DOMAIN.example with the verified production domain before publishing. -->
+  <url><loc>https://YOUR-DOMAIN.example/</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/services</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/company-setup</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/pvip</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/mm2h</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/banking</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/market-entry</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/contact</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/faq</loc></url>
+</urlset>

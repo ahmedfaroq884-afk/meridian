@@ -1,0 +1,1 @@
+- [Meridian brand scope and claims](meridian-brand.md) — Use the Meridian Malaysia name and service areas; avoid government affiliation, guaranteed outcomes, credentials, or fabricated proof.

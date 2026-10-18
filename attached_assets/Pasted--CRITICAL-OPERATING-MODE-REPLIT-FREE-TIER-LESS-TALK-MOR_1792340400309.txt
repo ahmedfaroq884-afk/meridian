@@ -1,0 +1,816 @@
+
+# CRITICAL OPERATING MODE: REPLIT FREE TIER
+# LESS TALK. MORE WORK. MINIMIZE AI USAGE.
+
+You are responsible for implementing Meridian Malaysia, a complete, professional, production-oriented website.
+
+I am using Replit's FREE tier. Treat AI usage, tool calls, context, and time as limited resources.
+
+STRICT RULES:
+
+1. START IMPLEMENTING IMMEDIATELY. Do not begin with a long plan, repeat my requirements, explain your architecture, or send progress updates.
+
+2. DO NOT ASK UNNECESSARY QUESTIONS. Make sensible, professional decisions independently. Ask only if a missing detail genuinely blocks implementation or requires my authorization.
+
+3. DO NOT RESPOND WITH A TUTORIAL INSTEAD OF BUILDING. Create and edit the actual project files.
+
+4. INSPECT THE PROJECT ONCE. Quickly identify its existing framework, files, dependencies, and current state. Preserve working functionality and avoid rebuilding things unnecessarily.
+
+5. WORK IN COORDINATED BATCHES. Group related file changes together. Avoid repeated edits to the same files, redundant tool calls, unnecessary searches, and regenerating components that already work.
+
+6. DO NOT REPEAT YOURSELF. Keep all explanations, progress messages, and final reports concise. Do not narrate every action.
+
+7. DO NOT OVERENGINEER. Prefer simple, reliable implementations and a small dependency footprint. Do not add packages when existing functionality is sufficient.
+
+8. IMPLEMENT THE HIGHEST-VALUE FEATURES FIRST. Prioritize:
+   A. Complete responsive public website and routing.
+   B. Supabase setup, database migration, and real RLS security.
+   C. Working lead funnel and submission.
+   D. Secure admin authentication and lead management.
+   E. Four languages and proper Arabic RTL.
+   F. Content management, SEO, and theme controls.
+   G. Optional Adsterra adapter and fallback.
+   H. Deployment configuration, documentation, and remaining polish.
+
+9. DO NOT SACRIFICE SECURITY FOR SPEED. Never expose service-role keys, invent authentication, weaken RLS, or create fake security features.
+
+10. TEST EFFICIENTLY. Run the production build and relevant checks after implementation. Fix actual errors directly. Do not repeatedly run identical successful checks unless code changes justify rerunning them.
+
+11. BE HONEST ABOUT TESTS. Do not claim that something was tested unless it actually was. If an external service cannot be tested without my credentials, implement the integration and state exactly what remains.
+
+12. DO NOT LEAVE MAJOR FEATURES AS TODOs. If a feature requires credentials, account approval, or an external service, implement the surrounding functionality and isolate the remaining manual step.
+
+13. DO NOT SPEND MY USAGE ON UNNECESSARY DOCUMENTATION. Create concise, practical documentation, particularly SETUP_CHECKLIST.md.
+
+14. IF CONTEXT OR USAGE IS RUNNING LOW, finish the highest-priority working features first. Save the actual implementation in the project files before producing a short status report. Never waste the remaining budget repeating the specification.
+
+15. FINAL RESPONSE: Give me only:
+   - What was implemented.
+   - Whether the build passed.
+   - Any real unresolved issues.
+   - The exact manual actions I must perform next.
+
+Do not stop after creating a plan or a mockup. Start building.
+
+==================================================
+PROJECT SPECIFICATION
+==================================================
+
+# 1. OFFICIAL BRAND
+
+The official public brand name is:
+
+MERIDIAN MALAYSIA
+
+Never use "MY-Gateway Digital" as the public brand name.
+
+Meridian Malaysia is a premium Malaysia business gateway helping international and local clients navigate:
+
+- Malaysia company setup and Sdn Bhd formation
+- Corporate structuring
+- Business relocation
+- PVIP
+- MM2H
+- Banking introductions
+- Market entry
+- Business facilitation
+- Corporate advisory coordination
+
+Brand personality:
+Premium, international, discreet, modern, sophisticated, professional, Malaysian, trustworthy, and suitable for high-value B2B enquiries.
+
+Suggested positioning:
+"Your Gateway to Business in Malaysia"
+
+Never invent licences, government affiliations, banking partnerships, client numbers, awards, reviews, testimonials, offices, or professional credentials. Do not imply guaranteed visa, banking, company registration, or regulatory outcomes.
+
+# 2. TECHNOLOGY AND HOSTING
+
+Use:
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+- @supabase/supabase-js
+
+Build a static frontend deployable to Cloudflare Pages and, where practical, GitHub Pages.
+
+Production must not depend on a persistent Node.js server. Node.js may be used for development, builds, and testing.
+
+Build command: npm run build
+Output directory: dist
+
+Keep dependencies minimal. Prefer stable, well-supported packages.
+
+# 3. EXISTING PROJECT
+
+Inspect the current project, then implement the specification directly.
+
+Preserve useful existing work. Do not replace the entire project blindly if a working implementation already exists.
+
+Do not create unnecessary files, repeated components, or redundant abstractions.
+
+# 4. DESIGN AND RESPONSIVENESS
+
+Create a premium, polished corporate website, not a generic AI landing-page template.
+
+Use excellent typography, intentional spacing, strong hierarchy, restrained animation, sophisticated colors, subtle borders, accessible contrast, professional imagery, and clear calls to action.
+
+Support mobile phones, tablets, laptops, desktops, and ultrawide screens.
+
+Requirements:
+- No horizontal overflow.
+- No overlapping or clipped content.
+- Responsive navigation and tables.
+- Touch-friendly controls.
+- Keyboard navigation and visible focus.
+- Reduced-motion support.
+- Accessible forms and contrast.
+- Light and dark themes.
+
+Use CSS logical properties to support RTL correctly.
+
+# 5. PUBLIC ROUTES
+
+Implement:
+/
+ /services
+ /company-setup
+ /pvip
+ /mm2h
+ /banking
+ /market-entry
+ /start
+ /contact
+ /faq
+ /privacy
+ /terms
+ /disclaimer
+ /admin-console-secure
+
+Include a polished 404 page.
+
+Every public page must have appropriate page titles, descriptions, heading structure, navigation, footer, language selector, and theme support.
+
+# 6. HOMEPAGE
+
+Build:
+- Professional header and navigation
+- Dynamic timezone greeting
+- Premium hero with primary and secondary CTAs
+- Services overview
+- Why Malaysia section
+- Company setup section
+- PVIP/MM2H section
+- Banking section
+- Market entry section
+- Process overview
+- Qualification funnel CTA
+- FAQ preview
+- Contact CTA
+- Professional footer
+
+Write natural, credible corporate copy. Avoid exaggerated promises and fabricated claims.
+
+# 7. TIMEZONE GREETING
+
+Use Intl.DateTimeFormat().resolvedOptions().timeZone.
+
+Display a time-appropriate greeting, such as:
+- Good Morning in Kuala Lumpur
+- Good Afternoon in Riyadh
+- Good Evening in London
+
+Support morning, afternoon, evening, and night.
+
+Use a safe timezone-to-city mapping and a generic fallback for unknown timezones.
+
+Do not request geolocation permission or claim to know the visitor's exact physical location.
+
+This feature must work without a backend.
+
+# 8. LANGUAGE DETECTION AND TRANSLATION
+
+Supported languages:
+- English
+- Arabic
+- Malay
+- Chinese
+
+Priority:
+1. Previously selected language preference.
+2. Browser/system language.
+3. Fallback to Modern Standard Arabic (Fusha).
+
+Language mapping:
+- English -> English
+- Malay/ms -> Malay
+- Chinese/zh -> Chinese
+- Any unsupported language -> Arabic
+
+Create structured locale files or an equivalent maintainable translation system. Do not scatter translations throughout components.
+
+Translate the full user-facing interface, including navigation, buttons, forms, errors, validation, admin labels, and major page content.
+
+Use natural, professional Modern Standard Arabic appropriate for international business.
+
+Provide a floating, accessible language switcher:
+English | العربية | Bahasa Melayu | 中文
+
+Switch languages without a full page reload and persist the preference.
+
+# 9. NATIVE ARABIC RTL
+
+When Arabic is active:
+document.documentElement.lang = "ar"
+document.documentElement.dir = "rtl"
+
+For English, Malay, and Chinese, use LTR.
+
+Mirror layout, navigation, icons where appropriate, forms, spacing, and alignment naturally. Do not simply right-align all text.
+
+Use logical CSS properties and verify both directions.
+
+# 10. SUPABASE CONFIGURATION
+
+Use @supabase/supabase-js and one centralized client module.
+
+For Vite, support:
+VITE_SUPABASE_URL
+VITE_SUPABASE_PUBLISHABLE_KEY
+
+Optionally support VITE_SUPABASE_ANON_KEY for compatibility with older projects.
+
+Never expose SUPABASE_SERVICE_ROLE_KEY or any private secret in frontend code, VITE variables, Git, or the production bundle.
+
+Create .env.example with blank values only.
+
+Missing Supabase configuration must not crash the public website. Display a clear configuration message in development and gracefully disable backend-dependent actions in production.
+
+Do not pretend a lead was submitted when Supabase is unavailable. Explain that submission failed and allow a safe retry.
+
+# 11. DATABASE MIGRATION
+
+Create a versioned SQL migration under supabase/migrations/.
+
+Create public.leads with:
+- id uuid primary key
+- created_at timestamptz
+- updated_at timestamptz
+- full_name text
+- email text
+- country text
+- phone_country_code text
+- phone_number text
+- service_interest text
+- business_stage text
+- has_existing_company boolean
+- company_country text
+- estimated_budget text
+- timeline text
+- visa_interest text
+- banking_interest text
+- contact_preference text
+- message text
+- priority text
+- status text
+- source text
+- language text
+- timezone text
+- utm_source text
+- utm_medium text
+- utm_campaign text
+
+Add appropriate defaults, constraints, indexes, and updated_at handling.
+
+Priority values:
+high, standard, completed
+
+Status values:
+new, contacted, qualified, processing, completed, closed
+
+Do not collect or store unnecessary sensitive information. Do not store raw IP addresses for analytics. Omit ip_hash unless a genuinely necessary, documented, privacy-conscious implementation is available.
+
+Create public.site_content:
+- id
+- content_key
+- language
+- content_value
+- updated_at
+
+Add a uniqueness constraint on content_key + language.
+
+Create public.site_settings:
+- id
+- setting_key
+- setting_value jsonb
+- updated_at
+
+Create public.admin_users:
+- id referencing auth.users(id)
+- email
+- role
+- created_at
+
+Create public.analytics_events:
+- id
+- created_at
+- event_type
+- page
+- language
+- timezone
+- metadata jsonb
+
+Restrict event types and metadata sizes where practical.
+
+# 12. REAL AUTHENTICATION AND SECURITY
+
+Use Supabase Auth for admin login.
+
+Do not implement fake security using:
+- Hardcoded passwords
+- Frontend-only password comparison
+- localStorage passwords
+- sessionStorage passwords
+- Obfuscated secrets
+- Base64
+- Hidden routes
+- Client-side secret tokens
+
+Protect /admin-console-secure with an authentication guard and server-enforced database authorization through RLS.
+
+A frontend route guard is only a usability feature. Actual data protection must be enforced by Supabase.
+
+Only existing authorized administrators may manage administrative data.
+
+Do not permit public self-registration to grant administrator privileges.
+
+Document the safe process for creating the first administrator.
+
+# 13. ROW LEVEL SECURITY
+
+Enable RLS on every sensitive table and implement actual policies.
+
+LEADS:
+- Anonymous visitors may INSERT valid leads.
+- Anonymous visitors may not SELECT, UPDATE, or DELETE leads.
+- Authorized admins may SELECT and UPDATE leads.
+- Allow admin DELETE only if needed and securely restricted.
+
+SITE_CONTENT:
+- Public may read only published/public content.
+- Only authorized admins may create, update, or delete content.
+
+SITE_SETTINGS:
+- Public may read only explicitly public settings.
+- Only authorized admins may modify settings.
+
+ANALYTICS:
+- Public may insert narrowly validated events.
+- Public may not read analytics.
+- Only authorized admins may read analytics.
+
+ADMIN_USERS:
+- Prevent users from granting themselves or others admin privileges.
+- Restrict table access to the minimum necessary.
+- Use safe authorization policies or carefully designed database functions to avoid recursive RLS policies.
+
+Never rely on UI restrictions alone.
+
+Do not add broad policies such as "authenticated users can do everything."
+
+# 14. ADMIN CONSOLE
+
+Build a professional dashboard at /admin-console-secure with:
+- Overview
+- Lead Manager
+- Content Manager
+- SEO/Metadata
+- Performance
+- Analytics
+- System Utilities
+- Settings
+- Logout
+
+Require real Supabase authentication. Show appropriate loading, empty, error, and unauthorized states.
+
+# 15. LEAD MANAGER
+
+Create a responsive lead table with:
+- Date
+- Client
+- Country
+- Contact
+- Service
+- Business stage
+- Budget
+- Timeline
+- Priority
+- Status
+
+Include search, filtering, sorting, pagination, lead details, priority/status editing, and CSV export.
+
+Priority colors:
+- Red: High Priority
+- Yellow: Standard
+- Green: Processing Completed
+
+Do not label a client "High-Net-Worth" without verified evidence.
+
+Protect CSV exports against spreadsheet formula injection and correctly escape CSV values.
+
+All lead access and updates must be authorized by RLS.
+
+# 16. CONTENT MANAGER
+
+Allow authorized admins to edit language-specific content stored in site_content.
+
+Include edit, preview, save, cancel, validation, loading, and error states.
+
+Do not render unsanitized HTML. Prefer plain text or a controlled, sanitized rich-text format.
+
+Content must have sensible defaults when Supabase is unavailable.
+
+Do not claim every edit is live instantly if a static page requires rebuilding or redeployment.
+
+# 17. SEO AND METADATA
+
+Create page-specific titles and descriptions, canonical URL support, Open Graph metadata, robots.txt, sitemap.xml, and truthful structured data where appropriate.
+
+Admin controls may include:
+- Title
+- Description
+- Open Graph title and description
+- Canonical URL
+- Robots settings
+
+Clearly document the static-hosting limitations of dynamically changing metadata.
+
+Do not create fake ratings, reviews, testimonials, or aggregate review schema.
+
+# 18. PERFORMANCE DASHBOARD
+
+Measure available browser performance data, including navigation timing, DOM content loaded, load timing, resource timing, and ad latency where measurable.
+
+Clearly label metrics as measured, estimated, or unavailable.
+
+Do not claim arbitrary measurements are official Core Web Vitals.
+
+Keep this feature lightweight.
+
+# 19. THEME CONTROLS
+
+Support Light, Dark, and System themes.
+
+Persist the user's theme preference.
+
+Provide a preview of both themes in the admin interface.
+
+Ensure contrast and RTL layouts remain correct in both themes.
+
+# 20. JSON BACKUP
+
+Create a "Download JSON Backup" action.
+
+Only authenticated, authorized admins may export data they are permitted to access.
+
+Include appropriate site_content, site_settings, analytics, and leads.
+
+Handle pagination or large datasets safely.
+
+Never include passwords, service-role keys, private API keys, authentication secrets, or KYC documents.
+
+Label the export with a timestamp and schema/version information.
+
+# 21. LEAD ONBOARDING FUNNEL
+
+Create a polished, multi-step qualification funnel at /start.
+
+Do not ask for passport uploads or identity documents initially.
+
+Collect:
+
+1. Service interest: Company Setup, PVIP, MM2H, Banking, Market Entry, Corporate Structuring, Other.
+2. Current country of residence.
+3. Nationality.
+4. Whether the client already has a company.
+5. Business type.
+6. Estimated budget.
+7. Timeline.
+8. Visa interest.
+9. Banking interest.
+10. Preferred contact method.
+11. Full name, email, international phone number, and optional message.
+12. Review.
+13. Submit.
+
+Include progress indication, back/next navigation, validation, keyboard accessibility, mobile optimization, error handling, and a clear success screen.
+
+Do not force visitors to answer optional questions.
+
+# 22. INTERNATIONAL PHONE SELECTOR
+
+Create a searchable international country/dialing-code selector with flags, country names, and dialing codes.
+
+Include Malaysia +60, Yemen +967, UAE +971, Saudi Arabia +966, and United Kingdom +44.
+
+Store country code and local phone number separately.
+
+Use sensible validation without incorrectly applying one country's phone-number rules to all countries.
+
+# 23. LEAD SUBMISSION
+
+Validate inputs and insert leads through Supabase.
+
+Use the publishable/anon client key with narrowly scoped RLS INSERT permission. Never expose privileged credentials.
+
+Handle validation failures, network errors, timeouts, duplicate submissions, and database errors.
+
+Prevent accidental repeated submissions.
+
+Never display success unless the insert actually succeeded.
+
+Success message:
+"Thank you. Your enquiry has been received."
+
+Do not falsely claim a person has already reviewed the enquiry.
+
+# 24. RECENT ACTIVITY
+
+Do not fabricate social proof.
+
+Never show fake claims such as "An entrepreneur from Dubai just applied 4 minutes ago" as real activity.
+
+Only show notifications based on genuine anonymized events, or clearly label them as demonstration examples.
+
+Never reveal names, email addresses, phone numbers, or sensitive lead details.
+
+If there is no genuine activity, hide the notification.
+
+# 25. OPTIONAL ADVERTISING
+
+Adsterra is an OPTIONAL secondary revenue source.
+
+The website must work perfectly without Adsterra configured, approved, available, or loaded.
+
+No Adsterra account, login, password, API token, or account session may be required for normal operation.
+
+Create a small, isolated provider architecture, for example:
+
+src/ads/
+  AdProvider.ts
+  AdSlot.tsx
+  AdManager.ts
+  InternalAdFallback.tsx
+  providers/
+    AdsterraProvider.ts
+    PlaceholderAdProvider.ts
+
+Use a simple provider interface with initialization, rendering, cleanup, and availability checks as appropriate.
+
+Use PlaceholderAdProvider by default until valid ad code is supplied.
+
+Do not overengineer the abstraction.
+
+# 26. ADSTERra INTEGRATION
+
+Create one clearly documented integration point for the official Adsterra publisher tag.
+
+The owner will obtain the tag directly from their Adsterra Publisher account after approval.
+
+Do not ask for:
+- Adsterra username or password
+- KYC documents
+- Payment credentials
+- Private API tokens
+
+The owner should only need to provide the generated publisher ad code when ready.
+
+Integrate the exact supplied code according to its official instructions. Avoid breaking the provider code, modifying identifiers, or injecting duplicate scripts.
+
+If no tag exists, render the placeholder/fallback provider.
+
+If the tag fails, is blocked, or is unavailable, render the internal fallback and keep the rest of the website working.
+
+Load ads asynchronously after the main layout renders. Prevent duplicate injections, layout collapse, blocking scripts, infinite retries, and unhandled third-party failures.
+
+Do not integrate the Adsterra Publisher API by default.
+
+# 27. AD PLACEMENT AND FALLBACK
+
+Use very few ad placements, preferably on selected informational pages.
+
+Never place ads inside the lead funnel, over navigation, inside the admin console, or beside primary CTAs in a distracting way.
+
+Prefer Native Banner or standard Banner formats. Avoid Popunders and aggressive formats.
+
+If an ad cannot render, show a genuine Meridian Malaysia CTA, such as:
+
+"Planning to establish your business in Malaysia?"
+"Speak with Meridian Malaysia."
+"Explore Business Setup."
+
+Do not make the fallback look like an advertisement from another company.
+
+Business leads are the primary goal. Protect trust and conversion above ad revenue.
+
+# 28. SECURITY HEADERS AND INPUT VALIDATION
+
+Create appropriate Cloudflare-compatible _headers configuration.
+
+Include appropriate:
+- Content-Security-Policy
+- X-Content-Type-Options
+- Referrer-Policy
+- Permissions-Policy
+- Strict-Transport-Security
+
+Allow only necessary Supabase and advertising origins. Document any additional CSP domains required by the official ad tag. Do not add unsafe-eval without a demonstrated requirement.
+
+Validate and safely handle user inputs, content editor fields, URLs, metadata, messages, and CSV output.
+
+Prevent XSS, unsafe HTML injection, unsafe URLs, and CSV formula injection.
+
+Use Supabase's parameterized SDK rather than manually building SQL queries.
+
+Do not expose raw database errors to visitors.
+
+# 29. AUTHENTICATION HARDENING
+
+Use Supabase Auth and secure session handling.
+
+Configure reasonable session behavior and document any provider-side rate-limiting requirements.
+
+Do not implement fake client-only brute-force protection or claim a frontend delay prevents attacks.
+
+Do not store passwords or private authentication tokens manually.
+
+# 30. PRIVACY AND LEGAL PAGES
+
+Create:
+- /privacy
+- /terms
+- /disclaimer
+
+Collect only information needed for enquiries.
+
+Do not collect identity documents during initial onboarding.
+
+Explain that Meridian Malaysia provides business facilitation, information, and coordination, and does not guarantee immigration, banking, licensing, company-registration, or regulatory outcomes.
+
+Do not claim to be a law firm, licensed immigration adviser, government body, or regulated financial institution without verified authority.
+
+# 31. ACCESSIBILITY
+
+Use semantic HTML, accessible form labels and errors, keyboard navigation, focus states, appropriate ARIA, reduced-motion support, screen-reader-friendly navigation, proper heading structure, and adequate contrast.
+
+# 32. PRIVACY-CONSCIOUS ANALYTICS
+
+Track only useful events, such as:
+- page_view
+- language_change
+- theme_change
+- lead_started
+- lead_completed
+- cta_clicked
+- ad_loaded
+- ad_failed
+
+Do not store raw sensitive form details inside analytics metadata.
+
+Do not collect unnecessary personal information.
+
+If consent is legally required for a tracking technology, implement an appropriate consent mechanism rather than silently bypassing it.
+
+# 33. STATIC DEPLOYMENT
+
+Create Cloudflare Pages configuration and concise documentation.
+
+Build:
+npm run build
+
+Output:
+dist
+
+Document GitHub Pages SPA routing differences where relevant.
+
+Create:
+- README.md
+- DEPLOYMENT.md
+- SECURITY.md
+- SETUP_CHECKLIST.md
+
+SETUP_CHECKLIST.md must contain only practical manual steps for the owner.
+
+# 34. ENVIRONMENT VARIABLES
+
+Create .env.example containing:
+
+VITE_SUPABASE_URL=
+VITE_SUPABASE_PUBLISHABLE_KEY=
+
+Optionally support:
+VITE_SUPABASE_ANON_KEY=
+
+Do not commit actual credentials.
+
+Never create or expose VITE_SUPABASE_SERVICE_ROLE_KEY.
+
+# 35. BUILD AND VERIFICATION
+
+After implementing the project, run the available installation/build/type-check/test commands efficiently.
+
+At minimum, run the production build and fix any build-blocking errors.
+
+Where tools and time permit, test:
+- Responsive layouts
+- Language switching
+- Arabic RTL
+- Theme switching
+- Missing Supabase configuration
+- Lead validation and submission behavior
+- Admin login and authorization
+- RLS policies
+- CSV export
+- Content management
+- JSON backup
+- Routing and 404
+- Adsterra absent
+- Adsterra failure and fallback
+
+Do not claim to have tested external services without credentials or a live environment.
+
+Do not repeatedly run the same successful tests unless relevant code changes have been made.
+
+# 36. SECURITY REVIEW
+
+Inspect source files, environment-variable usage, and the production bundle for accidentally exposed secrets.
+
+Verify that:
+- No service-role key is exposed.
+- No private API token is exposed.
+- No hardcoded admin password exists.
+- Anonymous users cannot read leads.
+- Unauthorized users cannot edit protected content.
+- Administrator access is backed by Supabase Auth and RLS.
+- Adsterra is optional.
+- The site renders without advertising.
+
+Be explicit about any security property that requires manual verification in Supabase.
+
+# 37. OWNER SETUP CHECKLIST
+
+Create a concise checklist covering:
+
+SUPABASE:
+1. Create the project.
+2. Run the generated migration.
+3. Configure authentication.
+4. Create the first admin account.
+5. Add the authorized admin UUID using the documented secure process.
+6. Add the frontend environment variables.
+7. Verify RLS.
+
+CLOUDFLARE:
+1. Connect the repository.
+2. Set build command to npm run build.
+3. Set output directory to dist.
+4. Configure environment variables.
+5. Deploy.
+6. Connect the domain and verify HTTPS.
+
+ADSTERRA:
+1. Register as a publisher.
+2. Complete any required verification and payment setup.
+3. Add the website.
+4. Request an appropriate banner format.
+5. Wait for approval.
+6. Copy the generated ad code.
+7. Give only the generated tag to Replit AI for integration.
+8. Never share account credentials.
+
+# 38. FINAL EXECUTION INSTRUCTIONS
+
+Begin by inspecting the project and then implement the highest-priority requirements in efficient batches.
+
+Do not return a plan instead of implementation.
+
+Do not stop at a mockup or scaffold.
+
+Do not invent completed tests, credentials, content, or security controls.
+
+Do not waste usage on repeated explanations or unnecessary rewrites.
+
+Create the real files, migration, RLS policies, components, routes, configuration, and documentation.
+
+Run the build, fix errors, and perform the security review.
+
+If something requires my manual action, isolate it and document it clearly.
+
+FINAL RESPONSE MUST BE SHORT:
+1. What was implemented.
+2. Build status.
+3. Real unresolved issues.
+4. The next manual steps I must perform.
+
+START BUILDING NOW.
