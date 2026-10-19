@@ -17,8 +17,8 @@ const navItems = [
   ["/pvip", "pvip"], ["/mm2h", "mm2h"], ["/banking", "banking"], ["/market-entry", "marketEntry"],
 ] as const;
 
-function Brand() {
-  return <span className="brand" aria-label="Meridian Malaysia">
+function Brand({ language }: { language: Language }) {
+  return <span className="brand" aria-label={t(language, "brandLabel")}>
     <span className="brand-mark" aria-hidden="true">
       <svg viewBox="0 0 36 40" fill="none">
         <path d="M3 34V6l15 14L33 6v28" stroke="currentColor" strokeWidth="1.6"/>
@@ -26,7 +26,7 @@ function Brand() {
         <circle cx="18" cy="5" r="2" fill="currentColor"/>
       </svg>
     </span>
-    <span className="brand-copy"><span className="brand-name">MERIDIAN</span><span className="brand-caption">Malaysia · Gateway</span></span>
+    <span className="brand-copy"><span className="brand-name">MERIDIAN</span><span className="brand-caption">{t(language, "brandCaption")}</span></span>
   </span>;
 }
 
@@ -39,7 +39,7 @@ export function SiteShell({ children, language, setLanguage, theme, setTheme, cu
   if (currentPath === "/admin-console-secure") {
     return <div className={`admin-site-shell ${rtl ? "rtl" : ""}`} dir={rtl ? "rtl" : "ltr"}>
       <div className="admin-preferences container">
-        <a href="/" aria-label="Meridian Malaysia home"><Brand/></a>
+        <a href="/" aria-label={t(language, "brandLabel")}><Brand language={language}/></a>
         <div className="nav-actions">
           <label htmlFor="admin-language" className="sr-only">{t(language, "language")}</label>
           <select id="admin-language" value={language} onChange={(event) => changeLanguage(event.target.value)} aria-label={t(language, "language")}>
@@ -55,7 +55,7 @@ export function SiteShell({ children, language, setLanguage, theme, setTheme, cu
     </div>;
   }
   return <div className={`site-shell ${rtl ? "rtl" : ""}`} dir={rtl ? "rtl" : "ltr"}>
-    <a href="#main-content" className="skip-link">Skip to content</a>
+    <a href="#main-content" className="skip-link">{t(language, "skipToContent")}</a>
     <div className="topbar">
       <div className="container topbar-inner">
         <span className="topbar-note">{t(language, "greeting")}</span>
@@ -73,18 +73,18 @@ export function SiteShell({ children, language, setLanguage, theme, setTheme, cu
     </div>
     <header className="site-header">
       <div className="container nav-wrap">
-        <a href="/" aria-label="Meridian Malaysia home"><Brand /></a>
-        <nav className="main-nav" aria-label="Main navigation">
+        <a href="/" aria-label={t(language, "brandLabel")}><Brand language={language}/></a>
+        <nav className="main-nav" aria-label={t(language, "mainNavigation")}>
           {navItems.map(([path, key]) => <a key={path} href={path} aria-current={path === currentPath ? "page" : undefined}>{t(language, key)}</a>)}
         </nav>
         <div className="nav-actions">
           <a className="button nav-cta" href="/start">{t(language, "getStarted")} <span className="arrow" aria-hidden="true">→</span></a>
-          <button className="icon-button mobile-toggle" aria-label={menuOpen ? "Close navigation" : t(language, "menu")} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
+          <button className="icon-button mobile-toggle" aria-label={menuOpen ? t(language, "closeNavigation") : t(language, "menu")} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>
             <svg width="17" height="17" viewBox="0 0 20 20" fill="none" aria-hidden="true">{menuOpen ? <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.5"/> : <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.5"/>}</svg>
           </button>
         </div>
       </div>
-      <nav className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-label="Mobile navigation">
+      <nav className={`mobile-menu ${menuOpen ? "open" : ""}`} aria-label={t(language, "mainNavigation")}>
         {navItems.map(([path, key]) => <a key={path} href={path} aria-current={path === currentPath ? "page" : undefined} onClick={() => setMenuOpen(false)}>{t(language, key)}</a>)}
         <a href="/contact" onClick={() => setMenuOpen(false)}>{t(language, "contact")}</a>
         <a className="button" href="/start" onClick={() => setMenuOpen(false)}>{t(language, "getStarted")} <span className="arrow" aria-hidden="true">→</span></a>
@@ -104,20 +104,20 @@ export function SiteShell({ children, language, setLanguage, theme, setTheme, cu
     <footer className="site-footer">
       <div className="container footer-main">
         <div className="footer-brand">
-          <a href="/" aria-label="Meridian Malaysia home"><Brand /></a>
+          <a href="/" aria-label={t(language, "brandLabel")}><Brand language={language}/></a>
           <p>{t(language, "footerNote")}</p>
           <p>{t(language, "legalFooter")}</p>
         </div>
         <div className="footer-col"><h3>{t(language, "services")}</h3><div className="footer-links">
-          <a href="/company-setup">{t(language, "companySetup")}</a><a href="/pvip">PVIP coordination</a><a href="/mm2h">MM2H coordination</a><a href="/banking">{t(language, "banking")}</a><a href="/market-entry">{t(language, "marketEntry")}</a>
+          <a href="/company-setup">{t(language, "companySetup")}</a><a href="/pvip">{t(language, "footerPvip")}</a><a href="/mm2h">{t(language, "footerMm2h")}</a><a href="/banking">{t(language, "banking")}</a><a href="/market-entry">{t(language, "marketEntry")}</a>
         </div></div>
-        <div className="footer-col"><h3>Explore</h3><div className="footer-links">
+        <div className="footer-col"><h3>{t(language, "footerExplore")}</h3><div className="footer-links">
           <a href="/services">{t(language, "services")}</a><a href="/faq">{t(language, "faq")}</a><a href="/contact">{t(language, "contact")}</a><a href="/start">{t(language, "getStarted")}</a>
         </div></div>
-        <div className="footer-col"><h3>Clear boundaries</h3><p style={{ color: "hsl(42 18% 72%)", fontSize: 12, lineHeight: 1.75, maxWidth: 260 }}>Independent facilitation and information. No guaranteed registration, visa, banking or regulatory outcome.</p></div>
+        <div className="footer-col"><h3>{t(language, "footerRole")}</h3><p style={{ color: "hsl(42 18% 72%)", fontSize: 12, lineHeight: 1.75, maxWidth: 260 }}>{t(language, "footerRoleBody")}</p></div>
       </div>
       <div className="container footer-bottom">
-        <span>© {new Date().getFullYear()} Meridian Malaysia. For information purposes only.</span>
+        <span>© {new Date().getFullYear()} Meridian Malaysia. {t(language, "footerCopyright")}</span>
         <div className="footer-bottom-links"><a href="/privacy">{t(language, "privacy")}</a><a href="/terms">{t(language, "terms")}</a><a href="/disclaimer">{t(language, "disclaimer")}</a></div>
       </div>
     </footer>

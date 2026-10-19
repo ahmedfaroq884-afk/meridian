@@ -5,8 +5,9 @@ import { getPublicSettings, getPublicSiteContent, supabaseEnabled, track } from 
 import { SiteShell } from "./components/SiteShell";
 import { EnquiryForm } from "./components/EnquiryForm";
 import { AdminConsole } from "./pages/AdminConsole";
-import { ContactPage, FAQPage, HomePage, LegalPage, NotFoundPage, pageDescriptions, pageTitles, ServiceDetailPage, ServicesPage } from "./pages/PublicPages";
+import { ContactPage, FAQPage, HomePage, LegalPage, NotFoundPage, ServiceDetailPage, ServicesPage } from "./pages/PublicPages";
 import type { SiteSetting, ContentRecord } from "./lib/types";
+import { WhatsAppWidget } from "./components/WhatsAppWidget";
 
 function getStoredTheme(): ThemeChoice {
   try {
@@ -34,8 +35,14 @@ export default function App() {
   const [publicContent, setPublicContent] = useState<Record<string, string>>({});
   const [publicSettings, setPublicSettings] = useState<Record<string, unknown>>({});
   const path = window.location.pathname.replace(/\/+$/, "") || "/";
-  const pageTitle = pageTitles[path];
-  const pageDescription = pageDescriptions[path];
+  const titleKeyByPath: Record<string, string> = {
+    "/": "seoHome", "/services": "seoServices", "/company-setup": "seoCompany", "/pvip": "seoPvip",
+    "/mm2h": "seoMm2h", "/banking": "seoBanking", "/market-entry": "seoMarket", "/start": "seoStart",
+    "/contact": "seoContact", "/faq": "seoFaq", "/privacy": "seoPrivacy", "/terms": "seoTerms",
+    "/disclaimer": "seoDisclaimer", "/admin-console-secure": "seoAdmin",
+  };
+  const pageTitle = `${t(language, titleKeyByPath[path] ?? "notFoundTitle")} | Meridian Malaysia`;
+  const pageDescription = t(language, "seoDescription");
   const setLanguage = (next: Language) => {
     setLanguageState(next);
     try { localStorage.setItem("meridian-language", next); } catch { /* preference remains for this session */ }
@@ -78,8 +85,8 @@ export default function App() {
       if (value && typeof value === "object" && "value" in value && typeof value.value === "string") return value.value;
       return "";
     };
-    const resolvedTitle = settingString(`seo.${pathKey}.title`) || pageTitle || `${t(language, "notFoundTitle")} | Meridian Malaysia`;
-    const resolvedDescription = settingString(`seo.${pathKey}.description`) || pageDescription || "Independent facilitation, information and coordination for company setup, relocation and market entry in Malaysia. No outcomes are guaranteed.";
+    const resolvedTitle = settingString(`seo.${pathKey}.${language}.title`) || (language === "en" ? settingString(`seo.${pathKey}.title`) : "") || pageTitle;
+    const resolvedDescription = settingString(`seo.${pathKey}.${language}.description`) || (language === "en" ? settingString(`seo.${pathKey}.description`) : "") || pageDescription;
     document.title = resolvedTitle;
     let description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
     if (!description) {
@@ -97,8 +104,8 @@ export default function App() {
       }
       meta.content = value;
     };
-    const descriptionText = settingString(`seo.${pathKey}.og_description`) || resolvedDescription;
-    setMeta('meta[property="og:title"]', "property", "og:title", settingString(`seo.${pathKey}.og_title`) || resolvedTitle);
+    const descriptionText = settingString(`seo.${pathKey}.${language}.og_description`) || (language === "en" ? settingString(`seo.${pathKey}.og_description`) : "") || resolvedDescription;
+    setMeta('meta[property="og:title"]', "property", "og:title", settingString(`seo.${pathKey}.${language}.og_title`) || (language === "en" ? settingString(`seo.${pathKey}.og_title`) : "") || resolvedTitle);
     setMeta('meta[property="og:description"]', "property", "og:description", descriptionText);
     const configuredCanonical = settingString("seo.canonical_url") || import.meta.env.VITE_SITE_URL || window.location.origin;
     let canonicalOrigin = window.location.origin;
@@ -154,6 +161,7 @@ export default function App() {
 
   return <SiteShell language={language} setLanguage={setLanguage} theme={theme} setTheme={setTheme} currentPath={path}>
     {content}
+    {path !== "/admin-console-secure" && <WhatsAppWidget phoneNumber={publicSettings["contact.whatsapp_number"]} language={language}/>}
     {supabaseEnabled() && analyticsChoice === null && path !== "/admin-console-secure" && <aside className="consent-banner" aria-label={t(language, "consentTitle")}>
       <div><strong>{t(language, "consentTitle")}</strong><p>{t(language, "consentBody")}</p></div>
       <div className="consent-actions">

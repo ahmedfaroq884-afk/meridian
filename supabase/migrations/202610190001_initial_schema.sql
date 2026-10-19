@@ -111,7 +111,8 @@ values
   ('seo.home.og_title', '"Meridian Malaysia — Your Gateway to Business in Malaysia"'::jsonb, true),
   ('seo.home.og_description', '"Thoughtful guidance for company setup, market entry and business facilitation in Malaysia."'::jsonb, true),
   ('seo.canonical_url', '""'::jsonb, true),
-  ('seo.robots', '"index,follow"'::jsonb, true)
+  ('seo.robots', '"index,follow"'::jsonb, true),
+  ('contact.whatsapp_number', '""'::jsonb, true)
 on conflict (setting_key) do nothing;
 
 create or replace function public.is_safe_analytics_metadata(value jsonb)
@@ -164,6 +165,30 @@ begin
 end;
 $$;
 
+-- Pause Meridian writes at 400 MiB of total database usage, leaving a 100 MiB
+-- buffer below Supabase Free's 500 MB database limit. No files or buckets are used.
+create or replace function public.enforce_storage_budget()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  current_database_bytes bigint;
+begin
+  perform pg_catalog.pg_advisory_xact_lock(1928374, 915);
+  if tg_table_name = 'analytics_events' then
+    delete from public.analytics_events
+    where created_at < pg_catalog.now() - interval '90 days';
+  end if;
+  current_database_bytes := pg_catalog.pg_database_size(pg_catalog.current_database());
+  if current_database_bytes >= 400 * 1024 * 1024 then
+    raise exception 'Storage safety limit reached. New writes are paused until storage is reviewed.';
+  end if;
+  return new;
+end;
+$$;
+
 drop trigger if exists leads_set_updated_at on public.leads;
 create trigger leads_set_updated_at before update on public.leads
 for each row execute function public.set_updated_at();
@@ -193,6 +218,21 @@ for each row execute function public.set_updated_at();
 drop trigger if exists site_settings_set_updated_at on public.site_settings;
 create trigger site_settings_set_updated_at before update on public.site_settings
 for each row execute function public.set_updated_at();
+drop trigger if exists leads_storage_budget on public.leads;
+create trigger leads_storage_budget before insert or update on public.leads
+for each row execute function public.enforce_storage_budget();
+drop trigger if exists site_content_storage_budget on public.site_content;
+create trigger site_content_storage_budget before insert or update on public.site_content
+for each row execute function public.enforce_storage_budget();
+drop trigger if exists site_settings_storage_budget on public.site_settings;
+create trigger site_settings_storage_budget before insert or update on public.site_settings
+for each row execute function public.enforce_storage_budget();
+drop trigger if exists analytics_events_storage_budget on public.analytics_events;
+create trigger analytics_events_storage_budget before insert or update on public.analytics_events
+for each row execute function public.enforce_storage_budget();
+drop trigger if exists admin_users_storage_budget on public.admin_users;
+create trigger admin_users_storage_budget before insert or update on public.admin_users
+for each row execute function public.enforce_storage_budget();
 
 alter table public.admin_users enable row level security;
 alter table public.leads enable row level security;
@@ -257,6 +297,19 @@ grant insert, update, delete on public.site_settings to authenticated;
 grant select, insert on public.analytics_events to anon, authenticated;
 grant select on public.admin_users to authenticated;
 grant usage on schema public to anon, authenticated;
+
+revoke all on public.admin_users, public.leads, public.site_content, public.site_settings, public.analytics_events
+from public, anon, authenticated;
+grant usage on schema public to anon, authenticated;
+grant select on public.admin_users to authenticated;
+grant insert on public.leads to anon, authenticated;
+grant select, update on public.leads to authenticated;
+grant select on public.site_content to anon, authenticated;
+grant insert, update, delete on public.site_content to authenticated;
+grant select on public.site_settings to anon, authenticated;
+grant insert, update, delete on public.site_settings to authenticated;
+grant insert on public.analytics_events to anon, authenticated;
+grant select on public.analytics_events to authenticated;
 
 -- First admin: create the Auth user first, then run:
 -- insert into public.admin_users (id, email, role)

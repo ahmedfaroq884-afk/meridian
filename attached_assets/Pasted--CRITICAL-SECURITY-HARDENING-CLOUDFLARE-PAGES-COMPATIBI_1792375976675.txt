@@ -1,0 +1,59 @@
+### CRITICAL: SECURITY HARDENING + CLOUDFLARE PAGES COMPATIBILITY
+
+Work directly on the existing Meridian Malaysia project. Preserve the current design and functionality. Minimize explanations and unnecessary AI usage.
+
+**PART A: SECURITY — PROTECT THE WEBSITE AND DATABASE**
+
+Perform a security audit and fix issues you can verify. Do not claim the website is impossible to hack.
+
+1. **Secrets and environment variables**
+   - Never put Supabase secret keys, legacy service-role keys, passwords, private tokens, or other server secrets in React components, browser JavaScript, HTML, public files, Git, or production build output.
+   - Only use `VITE_` variables for values explicitly intended to be public. Vite exposes these variables to the browser, so they must never contain secrets.
+   - Keep `.env` out of Git using `.gitignore`. Provide `.env.example` containing placeholder values only.
+   - Use Replit Secrets for development secrets and Cloudflare environment variables for any server-side secrets, if server-side functionality is actually required.
+   - Never print secret values in logs, terminal output, error messages, or the final report.
+
+2. **Supabase database security**
+   - Use only the Supabase publishable key in the frontend.
+   - Enable and verify Row Level Security (RLS) on every exposed table.
+   - Public visitors may submit leads through narrowly scoped insert permissions, but must never read, list, modify, or delete leads.
+   - Only authenticated, explicitly authorized administrators may read or manage leads, content, settings, and private analytics.
+   - Do not trust a hidden admin page, client-side checks, URL secrecy, or localStorage as authorization.
+   - Never allow users to assign themselves an admin role or bypass authorization by modifying browser requests.
+   - Do not expose private customer information in public API responses, logs, analytics, or error messages.
+   - Add reasonable validation, input length limits, spam protection, and rate limiting where practical. Do not rely on frontend validation alone.
+   - Review database permissions, RLS policies, Supabase Security Advisor findings, and authentication settings. Do not weaken security just to make a feature work.
+
+3. **Website hardening**
+   - Check for XSS, unsafe HTML rendering, injection risks, insecure redirects, exposed debug information, and vulnerable dependencies.
+   - Use appropriate Content Security Policy and other security headers where compatible with the website and its third-party integrations.
+   - Avoid logging personal data. Collect only information needed for the lead funnel.
+   - Never collect or upload passport images or identity documents through the public lead form.
+   - Test unauthorized access and direct API requests, not just whether the interface hides admin controls.
+   - If a security requirement cannot be implemented or verified, clearly identify it instead of claiming it is secure.
+
+**PART B: CLOUDFLARE PAGES — MUST BE DEPLOYABLE**
+
+The project must remain a React + TypeScript + Vite website compatible with Cloudflare Pages. Do not migrate to another framework or require a paid server just to serve the frontend.
+
+Configure and verify:
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Node.js and dependency settings compatible with the project.
+- React Router navigation and direct URL refreshes work on Cloudflare Pages, including routes such as `/services`, `/contact`, and `/admin-console-secure`.
+- Add the necessary SPA fallback configuration if required.
+- Ensure the production build contains the frontend only and no private server secrets.
+- Document the exact GitHub-to-Cloudflare Pages deployment steps.
+- Document which environment variables must be configured in Cloudflare Pages. Public Supabase variables may be bundled into the frontend; any private server variables must remain server-side.
+- If any feature requires backend code, identify it and use an appropriate secure Cloudflare Worker/Function or Supabase Edge Function only when necessary. Do not pretend frontend code alone can keep a secret.
+
+**PART C: TEST BEFORE FINISHING**
+
+1. Run `npm run build` and fix errors.
+2. Test direct navigation and page refreshes on nested routes.
+3. Inspect the generated `dist` files for accidentally exposed secrets.
+4. Test that an unauthenticated visitor cannot retrieve leads or access admin operations through direct API requests.
+5. Check Supabase RLS and permissions. Report what was actually tested and what still needs manual verification.
+6. Create or update `DEPLOYMENT.md`, `SECURITY.md`, and `SETUP_CHECKLIST.md`.
+
+**Work efficiently:** Inspect existing files first, reuse working code, make related changes in batches, avoid unnecessary package installations, and keep the final report concise. Do not claim deployment is complete unless the site has actually been deployed and verified.

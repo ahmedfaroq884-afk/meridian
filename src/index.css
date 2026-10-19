@@ -5,8 +5,8 @@
 
 :root {
   font-family: 'DM Sans', sans-serif;
-  color: #203a37;
-  background: #f4f1e9;
+  color: hsl(var(--ink));
+  background: hsl(var(--canvas));
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --canvas: 42 29% 94%;
@@ -34,33 +34,33 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --canvas: 168 26% 10%;
-  --surface: 165 22% 13%;
-  --surface-raised: 164 19% 16%;
-  --ink: 42 25% 91%;
-  --muted: 160 12% 65%;
-  --line: 165 13% 25%;
-  --forest: 157 35% 55%;
-  --forest-deep: 167 33% 23%;
-  --forest-soft: 164 21% 20%;
-  --accent: 13 64% 64%;
-  --accent-soft: 15 28% 21%;
-  --gold: 40 54% 62%;
-  --good: 148 38% 58%;
-  --warning: 35 75% 59%;
-  --bad: 3 65% 66%;
-  --shadow: 0 15px 45px hsl(170 50% 3% / .24);
+  --canvas: 220 20% 8%;
+  --surface: 220 19% 11%;
+  --surface-raised: 220 17% 15%;
+  --ink: 42 24% 93%;
+  --muted: 218 12% 69%;
+  --line: 218 14% 27%;
+  --forest: 154 42% 59%;
+  --forest-deep: 160 42% 19%;
+  --forest-soft: 158 25% 22%;
+  --accent: 13 65% 67%;
+  --accent-soft: 13 27% 23%;
+  --gold: 40 58% 67%;
+  --good: 148 42% 60%;
+  --warning: 35 77% 64%;
+  --bad: 3 68% 68%;
+  --shadow: 0 16px 48px hsl(220 40% 2% / .42);
 }
 
 @media (prefers-color-scheme: dark) {
   :root[data-theme="system"] {
     color-scheme: dark;
-    --canvas: 168 26% 10%; --surface: 165 22% 13%; --surface-raised: 164 19% 16%;
-    --ink: 42 25% 91%; --muted: 160 12% 65%; --line: 165 13% 25%;
-    --forest: 157 35% 55%; --forest-deep: 167 33% 23%; --forest-soft: 164 21% 20%;
-    --accent: 13 64% 64%; --accent-soft: 15 28% 21%; --gold: 40 54% 62%;
-    --good: 148 38% 58%; --warning: 35 75% 59%; --bad: 3 65% 66%;
-    --shadow: 0 15px 45px hsl(170 50% 3% / .24);
+    --canvas: 220 20% 8%; --surface: 220 19% 11%; --surface-raised: 220 17% 15%;
+    --ink: 42 24% 93%; --muted: 218 12% 69%; --line: 218 14% 27%;
+    --forest: 154 42% 59%; --forest-deep: 160 42% 19%; --forest-soft: 158 25% 22%;
+    --accent: 13 65% 67%; --accent-soft: 13 27% 23%; --gold: 40 58% 67%;
+    --good: 148 42% 60%; --warning: 35 77% 64%; --bad: 3 68% 68%;
+    --shadow: 0 16px 48px hsl(220 40% 2% / .42);
   }
 }
 
@@ -96,6 +96,9 @@ h1, h2, h3 { font-weight: 500; }
 .button-outline:hover { border-color: hsl(var(--forest)); background: hsl(var(--forest-soft)); color: hsl(var(--ink)); }
 .button-text { border: 0; padding: 8px 0; background: transparent; color: hsl(var(--forest)); cursor: pointer; font-weight: 600; }
 .button-text:hover { color: hsl(var(--accent)); }
+.whatsapp-widget { position: fixed; z-index: 55; inset-inline-end: 24px; bottom: 24px; display: grid; place-items: center; width: 56px; height: 56px; border: 1px solid hsl(0 0% 100% / .24); border-radius: 50%; color: #fff; background: #168c58; box-shadow: 0 8px 26px hsl(155 50% 7% / .35); transition: transform .18s ease, background .18s ease; }
+.whatsapp-widget:hover { color: #fff; background: #117547; transform: translateY(-2px); }
+.whatsapp-widget:focus-visible { outline-color: #2bd67b; }
 .arrow { display: inline-block; transition: transform .18s ease; }
 .button:hover .arrow, a:hover .arrow { transform: translateX(4px); }
 
