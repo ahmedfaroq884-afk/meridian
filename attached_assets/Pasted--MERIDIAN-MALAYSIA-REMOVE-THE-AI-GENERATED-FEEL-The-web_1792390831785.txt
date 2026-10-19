@@ -1,0 +1,43 @@
+# MERIDIAN MALAYSIA — REMOVE THE AI-GENERATED FEEL
+
+The website currently feels like AI slop. The problem is not simply the colours or layout. The wording, headings, feature labels, and overall presentation feel generic, repetitive, overly cautious, and obviously AI-generated.
+
+## 1. Fix the writing
+Remove generic headings and phrases such as:
+- “Clear limits”
+- “No promised results”
+- “Your trusted partner”
+- “Seamless solutions”
+- “Unlock your potential”
+- “Tailored solutions”
+- “Your journey starts here”
+
+These are examples, not an exhaustive list. Audit the entire website for similar wording.
+
+Replace vague statements with specific, natural, professional copy that explains what Meridian Malaysia actually does, who it serves, and what customers can expect.
+
+Do not replace one generic phrase with another. Every heading, description, button, and section must have a clear purpose.
+
+## 2. Make it feel like a real premium business
+- Use confident, natural business writing, not corporate buzzwords.
+- Remove unnecessary disclaimers, repetitive trust statements, filler cards, and sections that say very little.
+- Avoid short, dramatic headings that sound like an AI landing-page template.
+- Make service descriptions specific and useful.
+- Give every section a reason to exist.
+- Use realistic calls to action instead of generic buttons like “Learn More” everywhere.
+- Make the visual hierarchy intentional, with varied layouts, appropriate whitespace, strong typography, and restrained use of cards.
+- Do not add gradients, decorative elements, animations, or statistics just to make the website look more impressive.
+
+## 3. Audit the entire existing project
+Inspect all public pages, service pages, navigation, footer, enquiry forms, translations, and mobile layouts. Check for repeated wording, generic placeholder content, inconsistent tone, and sections that look auto-generated.
+
+Make the English copy excellent first, then ensure the Arabic, Malay, and Chinese versions preserve the same meaning and natural tone. Maintain proper Arabic RTL layouts.
+
+## 4. Important restrictions
+Do not rebuild the website from scratch. Preserve the existing architecture, routes, working features, Supabase integration, admin console, SEO configuration, and Cloudflare Pages compatibility.
+
+Do not invent client testimonials, business achievements, statistics, official university partnerships, or guarantees.
+
+First inspect the existing code and identify the biggest problems. Then implement the improvements directly, run `npm run build`, fix any errors, and report what changed.
+
+**The goal:** a credible, polished Malaysian business website that feels deliberately written and designed by a skilled human team, not generated from a generic AI website template.

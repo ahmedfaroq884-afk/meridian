@@ -1,0 +1,83 @@
+This is an existing project restored from GitHub after the previous Replit AI account reached its monthly usage limit. You are continuing unfinished work, not starting a new project.
+Repository: https://github.com/ahmedfaroq884-afk/meridian
+Project: Meridian Malaysia, a premium B2B business facilitation and relocation website.
+Stack: React 18, TypeScript, Vite, Tailwind CSS, Supabase, Lucide React. The intended frontend deployment platform is Cloudflare Pages.
+- Inspect the existing source code, README, DEPLOYMENT.md, SECURITY.md, SETUP_CHECKLIST.md, package.json and Supabase migration before editing.
+- Do not regenerate the website, replace the design, or create a fresh starter project.
+- Preserve all working pages, components, translations, styling, database helpers and admin functionality.
+- Do not reinstall packages unnecessarily or migrate frameworks.
+- Do not ask questions that can be answered by inspecting the repository.
+- Keep explanations short. Prioritize implementing and verifying actual changes.
+The project already includes:
+- Public pages for the homepage, services, company setup, PVIP, MM2H, banking, market entry, contact, FAQs, enquiry submission and legal notices.
+- English, Arabic, Malay and Chinese translations, including Arabic RTL layout.
+- A five-step enquiry form with country selection, international calling codes, business details, validation, UTM parameters and Supabase submission.
+- A Supabase integration and SQL migration containing leads, administrator authorization, site content, settings and analytics tables.
+- An administrator console with lead management, search, filtering, sorting, pagination, CSV export, content editing, SEO/settings editing, analytics, browser performance measurements, theme preview and JSON backup export.
+- Basic security headers, SPA redirects and Cloudflare Pages deployment documentation.
+- An optional ad architecture that currently uses a placeholder provider.
+These features exist in the source but must be tested before being considered production-ready.
+1. Run npm install only if needed.
+2. Run npm run build.
+3. Fix actual TypeScript and production build errors.
+4. Check the current implementation against the existing setup documentation.
+5. Identify which features are complete, incomplete, broken or awaiting external configuration.
+6. Never claim a test passed unless it was actually run.
+A. Service-specific pages
+Inspect src/pages/PublicPages.tsx. The existing service details are defined but the rendered pages use generic translated text. Fix this so company setup, PVIP, MM2H, banking and market entry each have accurate, distinct content. Keep the content translated into all four public languages. Preserve the site's careful wording: never promise approvals, visa outcomes, bank accounts or regulatory results.
+B. SEO and production configuration
+- Replace YOUR-DOMAIN.example in public/robots.txt and public/sitemap.xml only when the real production domain is known.
+- Include the appropriate public routes in the sitemap.
+- Ensure /admin-console-secure has noindex,nofollow, independently of the global SEO setting.
+- Improve initial HTML metadata and social-sharing previews. Do not rely exclusively on JavaScript to set page metadata.
+- Verify canonical URLs, page titles, descriptions, Open Graph metadata and favicon configuration.
+- Preserve Cloudflare Pages compatibility and the existing SPA fallback.
+C. Supabase and security
+- Audit the existing migration and client code. Do not blindly rewrite the database schema.
+- Public users may submit valid leads but must not read, update or delete private leads.
+- Only authenticated, explicitly authorized administrators may access private records and administrative operations.
+- Review the actual RLS policies, table grants, administrator checks and public insert policies.
+- Never place a Supabase secret/service-role key or any private credential in frontend code, VITE_ variables, GitHub or production build output.
+- Keep .env ignored and .env.example limited to placeholders.
+- Review the 400 MiB database write cutoff. Ensure the owner has a clear monitoring and recovery procedure so new enquiries do not silently stop working.
+- Review anonymous form abuse protection. Add an appropriate server-side rate limit or challenge if feasible, without weakening RLS.
+D. Lead form and administrator console
+Test the real submission flow, loading/error states, lead storage and admin authorization. Do not show a successful submission when saving failed. Preserve CSV export, status/priority updates, content editing and JSON backup export.
+Implement these in order, only when the core is stable:
+1. Secure new-lead email notifications using a server-side function and an email provider. Never expose provider credentials in the browser.
+2. Useful analytics event tracking for CTA clicks, enquiry starts/completions and other relevant actions, without collecting lead details or raw IP addresses.
+3. Improve content management so additional public content and translations can be managed without editing source code.
+4. Add admin password recovery and stronger account-protection options.
+5. Add meaningful automated checks and tests without introducing unnecessary dependencies.
+Do not attempt every optional feature in one enormous rewrite. Make focused, compatible changes.
+Keep the project compatible with Cloudflare Pages:
+- Build command: npm run build
+- Output directory: dist
+- Preserve the existing React/Vite architecture.
+- Ensure direct navigation and refresh work on all public routes.
+- Keep secrets server-side if backend functions are introduced.
+- Update documentation when configuration changes.
+- Do not claim deployment is complete until it is actually deployed and verified.
+
+ADDITIONAL REQUIREMENT: EDUCATION REFERRAL CHANNEL
+In addition to the existing priorities, implement a dedicated Education section for international students applying to Malaysian universities.
+Preserve the existing website and implement this in stages after the initial build and security checks pass.
+Include:
+- Education landing page and student enquiry pathway.
+- Foundation, diploma, bachelor's, master's and doctoral study options.
+- University preferences, intended subject, intake, qualifications and approximate tuition budget.
+- A secure admin workflow for assigning student leads to education agents.
+- Referral tracking, written commission agreements, configurable commission splits, expected commission, actual receipts and payment status.
+- Clear student consent before sharing their information with an identified agent.
+- Accurate disclosure of Meridian's referral role. Never claim official university partnerships or guarantee admission.
+- No passport uploads or sensitive document collection in the initial form.
+Do not assume that an agent pays a 50/50 split. Make the percentage configurable according to the actual written agreement.
+Preserve all existing routes, styling, translations, Supabase migrations and admin functionality. Add only necessary database changes, with appropriate RLS policies and tests.
+Priority: Finish and verify the existing project first, then implement education referrals without breaking working features. Run npm run build and report actual results.
+After the changes:
+- Run npm run build.
+- Test the affected pages and enquiry flow where possible.
+- Verify the security assumptions against the SQL policies.
+- Report what was implemented, what was tested, and what still requires manual configuration in Supabase or Cloudflare.
+- Do not pretend to have accessed the user's external accounts or database.
+Work efficiently: inspect once, preserve existing work, fix the biggest problems first, avoid unnecessary explanations and dependencies, and never sacrifice security for speed.
