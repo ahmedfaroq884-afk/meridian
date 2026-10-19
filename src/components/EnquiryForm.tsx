@@ -163,8 +163,9 @@ export function EnquiryForm({ language, initialService }: EnquiryFormProps) {
       await submitLead(payload);
       setSuccess(true);
     } catch (error) {
-      void error;
-      setErrorMessage(t(language, "unavailable"));
+      setErrorMessage(error instanceof Error && error.message === "LEAD_STORAGE_PAUSED"
+        ? t(language, "leadStoragePaused")
+        : t(language, "unavailable"));
     } finally {
       inFlight.current = false; setSending(false);
     }

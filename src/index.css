@@ -215,6 +215,67 @@ h1, h2, h3 { font-weight: 500; }
 .side-note h3 { font: 500 30px var(--font-display); margin: 22px 0 13px; }
 .side-note p { color: hsl(42 18% 73%); font-size: 13px; line-height: 1.75; }
 .side-note .button { margin-top: 12px; background: hsl(var(--gold)); color: hsl(var(--forest-deep)); }
+.education-options { display: grid; grid-template-columns: .8fr 1.2fr; gap: 10%; padding-block: 90px; }
+.education-options-copy h2, .education-disclosure h2 { margin: 18px 0 14px; font: 500 clamp(2rem, 4vw, 3.1rem)/1.12 var(--font-display); }
+.education-options-copy p, .education-disclosure p { color: hsl(var(--muted)); line-height: 1.8; }
+.education-level-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid hsl(var(--line)); }
+.education-level-list li { display: grid; grid-template-columns: 46px 1fr; gap: 16px; align-items: center; padding: 17px 0; border-bottom: 1px solid hsl(var(--line)); }
+.education-level-list li span { color: hsl(var(--accent)); font: 10px var(--font-mono); }
+.education-level-list li strong { font: 500 19px var(--font-display); }
+.education-disclosure { padding: 72px 0; background: hsl(var(--forest-soft)); }
+.education-disclosure .container { max-width: 900px; }
+.education-disclosure .button-text { display: inline-block; margin-top: 18px; }
+.education-form-page { padding-top: 44px; }
+.education-form-page .funnel-card { max-width: 800px; }
+.education-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 28px 0; }
+.education-form-grid .field.full { grid-column: 1 / -1; }
+.education-consents { display: grid; gap: 16px; margin: 25px 0 16px; padding: 18px; border: 1px solid hsl(var(--line)); }
+.education-consents legend { padding: 0 8px; font: 500 16px var(--font-display); }
+.education-check { display: grid; grid-template-columns: 19px 1fr; gap: 11px; align-items: start; color: hsl(var(--ink)); font-size: 12px; line-height: 1.7; }
+.education-check input { margin-top: 4px; accent-color: hsl(var(--forest)); }
+.education-consent-note { color: hsl(var(--muted)); font-size: 11px; line-height: 1.75; margin-bottom: 22px; }
+.education-agent-page { min-height: 65vh; padding-block: 52px 90px; }
+.education-agent-page .login-card { width: min(100%, 500px); margin: 40px auto; }
+.education-agent-page .admin-heading { align-items: center; }
+.education-agent-referrals { display: grid; gap: 18px; }
+.education-agent-details { display: grid; gap: 10px; color: hsl(var(--muted)); font-size: 13px; line-height: 1.65; }
+.education-agent-details p { margin: 4px 0 0; white-space: pre-wrap; }
+.education-admin { display: grid; gap: 18px; }
+.education-admin .admin-heading { margin-bottom: 0; }
+.education-admin-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 18px; align-items: start; }
+.education-admin-forms { display: grid; gap: 23px; }
+.education-admin-form { display: grid; gap: 14px; padding-top: 18px; border-top: 1px solid hsl(var(--line)); }
+.education-admin-form:first-child { padding-top: 0; border-top: 0; }
+.education-admin-form h3, .education-assignment h3 { margin: 0; font: 500 18px var(--font-display); }
+.education-admin-form > p { margin: -5px 0 2px; }
+.education-admin-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 14px 0; }
+.education-admin-form-grid label { display: grid; gap: 6px; color: hsl(var(--muted)); font-size: 10px; }
+.education-admin-form-grid input, .education-admin-form-grid select { width: 100%; min-height: 39px; padding: 8px 10px; border: 1px solid hsl(var(--line)); background: hsl(var(--canvas)); color: hsl(var(--ink)); font-size: 11px; }
+.education-admin-wide { grid-column: 1 / -1; }
+.education-admin-note { color: hsl(var(--muted)); font-size: 11px; line-height: 1.7; }
+.education-admin-note p { margin: 0 0 11px; }
+.education-lead-list { max-height: 500px; overflow: auto; }
+.education-lead-select { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border: 0; border-bottom: 1px solid hsl(var(--line)); background: transparent; color: hsl(var(--ink)); text-align: left; cursor: pointer; }
+.education-lead-select:last-child { border-bottom: 0; }
+.education-lead-select.active, .education-lead-select:hover { background: hsl(var(--forest-soft) / .62); }
+.education-lead-select span:first-child { display: grid; gap: 5px; min-width: 0; }
+.education-lead-select strong { font-size: 12px; }
+.education-lead-select small, .education-lead-date { color: hsl(var(--muted)); font-size: 10px; }
+.education-lead-select small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.education-agreement-list { padding-top: 13px; border-top: 1px solid hsl(var(--line)); }
+.education-agreement-list h3 { font: 500 15px var(--font-display); }
+.education-agreement-list p { color: hsl(var(--muted)); font-size: 10px; line-height: 1.7; }
+.education-student-detail { margin-top: 0; }
+.education-student-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; font-size: 11px; }
+.education-student-facts > span { display: grid; gap: 6px; min-width: 0; color: hsl(var(--muted)); overflow-wrap: anywhere; }
+.education-student-facts b { color: hsl(var(--ink)); font-weight: 600; }
+.education-student-message { grid-column: 1 / -1; white-space: pre-wrap; }
+.education-assignment { border-top: 1px solid hsl(var(--line)); }
+.education-assignment > form { padding: 23px 20px; }
+.education-assignment-heading { padding: 17px 20px; }
+.education-admin-confirm { display: grid; grid-template-columns: 18px 1fr; gap: 11px; margin: 10px 0 17px; color: hsl(var(--ink)); font-size: 11px; line-height: 1.7; }
+.education-admin-confirm input { margin-top: 4px; accent-color: hsl(var(--forest)); }
+.success-inline { padding: 13px 16px; border: 1px solid hsl(var(--good) / .35); background: hsl(var(--good) / .07); color: hsl(var(--ink)); font-size: 11px; line-height: 1.7; }
 .content-section { padding: 79px 0; border-top: 1px solid hsl(var(--line)); }
 .content-section h2 { max-width: 700px; font: 500 clamp(2rem, 4vw, 3.3rem)/1.12 var(--font-display); margin-bottom: 20px; }
 .content-section > p { max-width: 760px; color: hsl(var(--muted)); line-height: 1.8; }
@@ -397,9 +458,15 @@ h1, h2, h3 { font-weight: 500; }
 .country-option .country-flag { margin-inline-end: 3px; }
 
 @media (max-width: 1000px) {
-  .main-nav { gap: 13px; }
-  .main-nav a { font-size: 11px; }
+  .main-nav { display: none; }
+  .mobile-toggle { display: inline-grid; }
   .nav-actions .nav-cta { display: none; }
+  .mobile-menu { position: absolute; z-index: 60; top: 100%; inset-inline: 0; display: none; padding: 12px 24px 19px; background: hsl(var(--canvas)); border-bottom: 1px solid hsl(var(--line)); box-shadow: var(--shadow); }
+  .mobile-menu.open { display: grid; }
+  .mobile-menu a { padding: 13px 4px; border-bottom: 1px solid hsl(var(--line)); font-size: 13px; }
+  .mobile-menu .button { margin-top: 13px; }
+  .education-options { grid-template-columns: 1fr 1.2fr; gap: 7%; }
+  .education-admin-grid { grid-template-columns: 1fr; }
   .footer-main { grid-template-columns: 1fr 1fr; }
   .admin-layout { grid-template-columns: 205px minmax(0,1fr); }
   .admin-content { padding-inline: 23px; }
@@ -437,6 +504,8 @@ h1, h2, h3 { font-weight: 500; }
   .service-card h3 { margin-top: 22px; }
   .context-section { padding: 75px 0; }
   .context-grid { grid-template-columns: 1fr; gap: 42px; }
+  .education-options { grid-template-columns: 1fr; gap: 30px; padding-block: 68px; }
+  .education-disclosure { padding: 55px 0; }
   .context-art { min-height: 315px; }
   .context-ring { width: 185px; height: 185px; font-size: 22px; }
   .context-tag { font-size: 8px; }
@@ -465,6 +534,11 @@ h1, h2, h3 { font-weight: 500; }
   .step-line { width: 10px; }
   .funnel-card { margin-top: 28px; padding: 25px 20px; }
   .form-grid { grid-template-columns: 1fr; gap: 16px; }
+  .education-form-grid { grid-template-columns: 1fr; gap: 16px; }
+  .education-form-grid .field.full { grid-column: auto; }
+  .education-admin-form-grid { grid-template-columns: 1fr; }
+  .education-admin-wide, .education-student-message { grid-column: auto; }
+  .education-student-facts { grid-template-columns: 1fr 1fr; }
   .field.full { grid-column: auto; }
   .choice-grid { grid-template-columns: 1fr; }
   .review-row { grid-template-columns: 1fr; gap: 5px; }

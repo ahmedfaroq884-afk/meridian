@@ -10,4 +10,9 @@
   <url><loc>https://YOUR-DOMAIN.example/market-entry</loc></url>
   <url><loc>https://YOUR-DOMAIN.example/contact</loc></url>
   <url><loc>https://YOUR-DOMAIN.example/faq</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/privacy</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/terms</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/disclaimer</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/education</loc></url>
+  <url><loc>https://YOUR-DOMAIN.example/education/apply</loc></url>
 </urlset>

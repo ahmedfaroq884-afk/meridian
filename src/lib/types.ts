@@ -69,3 +69,94 @@ export interface TrackEvent {
   timezone: string;
   metadata: Record<string, unknown>;
 }
+
+export type StudyLevel = "foundation" | "diploma" | "bachelors" | "masters" | "doctoral";
+
+export interface EducationLeadInput {
+  full_name: string;
+  email: string;
+  phone_number?: string;
+  current_country: string;
+  university_preference?: string;
+  study_level: StudyLevel;
+  intended_subject: string;
+  intake?: string;
+  highest_qualification: string;
+  tuition_budget: "under-20k" | "20k-50k" | "50k-100k" | "100k-plus" | "not-specified";
+  additional_message?: string;
+  agent_intro_requested: boolean;
+  privacy_contact_consent: true;
+  language: Language;
+  timezone: string;
+}
+
+export interface EducationLead extends EducationLeadInput {
+  id: string;
+  created_at: string;
+}
+
+export interface EducationAgent {
+  id: string;
+  email: string;
+  display_name: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface EducationCommissionAgreement {
+  id: string;
+  agent_id: string;
+  agreement_reference: string;
+  written_agreement_date: string;
+  valid_from: string;
+  valid_until: string | null;
+  commission_rate: number;
+  commission_basis: string;
+  currency_code: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface EducationAgentConsent {
+  student_lead_id: string;
+  agent_id: string;
+  consented_at: string;
+  consent_method: "email" | "written" | "phone" | "video" | "other";
+  evidence_reference: string;
+  recorded_by: string;
+  revoked_at: string | null;
+}
+
+export type EducationApplicationStatus =
+  | "assigned"
+  | "application-in-progress"
+  | "offer-received"
+  | "enrolled"
+  | "declined"
+  | "withdrawn"
+  | "completed";
+
+export type EducationPaymentStatus =
+  | "not-due"
+  | "pending"
+  | "partially-received"
+  | "received"
+  | "disputed"
+  | "not-payable";
+
+export interface EducationReferral {
+  id: string;
+  student_lead_id: string;
+  agent_id: string;
+  agreement_id: string;
+  assigned_at: string;
+  application_status: EducationApplicationStatus;
+  commission_base_amount: number;
+  commission_rate_snapshot: number;
+  expected_commission_amount: number;
+  actual_received_amount: number;
+  currency_code: string;
+  payment_status: EducationPaymentStatus;
+  payment_note: string;
+  updated_at: string;
+}

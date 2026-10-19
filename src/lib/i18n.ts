@@ -1,4 +1,5 @@
 import type { Language } from "./types";
+import { siteText } from "./siteCopy";
 
 export const dictionaries: Record<Language, Record<string, string>> = {
   en: {
@@ -450,7 +451,7 @@ const extraTranslations: Record<Language, Record<string, string>> = {
 };
 
 export function t(language: Language, key: string): string {
-  return extraTranslations[language][key] ?? dictionaries[language][key] ?? dictionaries.en[key] ?? key;
+  return siteText(language, key) ?? extraTranslations[language][key] ?? dictionaries[language][key] ?? dictionaries.en[key] ?? key;
 }
 
 export function detectLanguage(): Language {

@@ -24,7 +24,6 @@ $$;
 
 revoke all on function public.is_admin() from public, anon;
 grant execute on function public.is_admin() to authenticated;
-grant execute on function public.is_admin() to anon;
 
 create table if not exists public.leads (
   id uuid primary key default gen_random_uuid(),
@@ -195,6 +194,7 @@ for each row execute function public.set_updated_at();
 create or replace function public.normalize_public_lead()
 returns trigger
 language plpgsql
+security definer
 set search_path = ''
 as $$
 begin
@@ -209,6 +209,7 @@ begin
   return new;
 end;
 $$;
+revoke all on function public.normalize_public_lead() from public, anon, authenticated;
 drop trigger if exists leads_normalize_public_submission on public.leads;
 create trigger leads_normalize_public_submission before insert on public.leads
 for each row execute function public.normalize_public_lead();
@@ -233,6 +234,8 @@ for each row execute function public.enforce_storage_budget();
 drop trigger if exists admin_users_storage_budget on public.admin_users;
 create trigger admin_users_storage_budget before insert or update on public.admin_users
 for each row execute function public.enforce_storage_budget();
+revoke all on function public.set_updated_at() from public, anon, authenticated;
+revoke all on function public.enforce_storage_budget() from public, anon, authenticated;
 
 alter table public.admin_users enable row level security;
 alter table public.leads enable row level security;

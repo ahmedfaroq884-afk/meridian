@@ -15,6 +15,7 @@ interface SiteShellProps {
 const navItems = [
   ["/", "home"], ["/services", "services"], ["/company-setup", "companySetup"],
   ["/pvip", "pvip"], ["/mm2h", "mm2h"], ["/banking", "banking"], ["/market-entry", "marketEntry"],
+  ["/education", "education"],
 ] as const;
 
 function Brand({ language }: { language: Language }) {
@@ -36,7 +37,7 @@ export function SiteShell({ children, language, setLanguage, theme, setTheme, cu
   const changeLanguage = (value: string) => {
     if (value === "en" || value === "ar" || value === "ms" || value === "zh") setLanguage(value);
   };
-  if (currentPath === "/admin-console-secure") {
+  if (currentPath === "/admin-console-secure" || currentPath === "/education-agent-console") {
     return <div className={`admin-site-shell ${rtl ? "rtl" : ""}`} dir={rtl ? "rtl" : "ltr"}>
       <div className="admin-preferences container">
         <a href="/" aria-label={t(language, "brandLabel")}><Brand language={language}/></a>
@@ -109,7 +110,7 @@ export function SiteShell({ children, language, setLanguage, theme, setTheme, cu
           <p>{t(language, "legalFooter")}</p>
         </div>
         <div className="footer-col"><h3>{t(language, "services")}</h3><div className="footer-links">
-          <a href="/company-setup">{t(language, "companySetup")}</a><a href="/pvip">{t(language, "footerPvip")}</a><a href="/mm2h">{t(language, "footerMm2h")}</a><a href="/banking">{t(language, "banking")}</a><a href="/market-entry">{t(language, "marketEntry")}</a>
+          <a href="/company-setup">{t(language, "companySetup")}</a><a href="/pvip">{t(language, "footerPvip")}</a><a href="/mm2h">{t(language, "footerMm2h")}</a><a href="/banking">{t(language, "banking")}</a><a href="/market-entry">{t(language, "marketEntry")}</a><a href="/education">{t(language, "education")}</a>
         </div></div>
         <div className="footer-col"><h3>{t(language, "footerExplore")}</h3><div className="footer-links">
           <a href="/services">{t(language, "services")}</a><a href="/faq">{t(language, "faq")}</a><a href="/contact">{t(language, "contact")}</a><a href="/start">{t(language, "getStarted")}</a>

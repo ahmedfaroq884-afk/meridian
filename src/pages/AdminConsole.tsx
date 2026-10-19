@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
-import type { AnalyticsEvent, ContentRecord, Lead, SiteSetting, ThemeChoice } from "../lib/types";
-import { checkAdminAccess, exportSnapshot, getAdminSession, listAnalytics, listLeads, listSettings, listSiteContent, saveContent, saveLead, saveSetting, signIn, signOut, supabaseEnabled } from "../lib/supabase";
+import type { AnalyticsEvent, ContentRecord, EducationAgent, EducationCommissionAgreement, EducationLead, EducationAgentConsent, EducationReferral, Lead, SiteSetting, ThemeChoice } from "../lib/types";
+import { assignEducationLead, checkAdminAccess, createEducationAgent, createEducationAgreement, exportSnapshot, getAdminSession, listAnalytics, listEducationAgents, listEducationAgreements, listEducationAgentConsents, listEducationLeads, listEducationReferrals, listLeads, listSettings, listSiteContent, revokeEducationAgentConsent, saveContent, saveLead, saveSetting, signIn, signOut, supabaseEnabled, updateEducationReferral } from "../lib/supabase";
 import { t } from "../lib/i18n";
 import type { Language } from "../lib/types";
+import { EducationAdminSection } from "./EducationAdminSection";
 
 type AuthState = "loading" | "signedOut" | "unauthorized" | "ready";
-type Section = "overview" | "leads" | "content" | "seo" | "performance" | "analytics" | "utilities" | "settings" | "theme";
+type Section = "overview" | "leads" | "education" | "content" | "seo" | "performance" | "analytics" | "utilities" | "settings" | "theme";
 const sections: { id: Section; label: string; icon: string }[] = [
   { id: "overview", label: "Overview", icon: "01" }, { id: "leads", label: "Leads", icon: "02" },
-  { id: "content", label: "Content", icon: "03" }, { id: "seo", label: "SEO", icon: "04" },
-  { id: "performance", label: "Performance", icon: "05" }, { id: "analytics", label: "Analytics", icon: "06" },
-  { id: "utilities", label: "System utilities", icon: "07" }, { id: "settings", label: "Settings", icon: "08" },
-  { id: "theme", label: "Theme preview", icon: "09" },
+  { id: "education", label: "Education referrals", icon: "03" }, { id: "content", label: "Content", icon: "04" }, { id: "seo", label: "SEO", icon: "05" },
+  { id: "performance", label: "Performance", icon: "06" }, { id: "analytics", label: "Analytics", icon: "07" },
+  { id: "utilities", label: "System utilities", icon: "08" }, { id: "settings", label: "Settings", icon: "09" },
+  { id: "theme", label: "Theme preview", icon: "10" },
 ];
 const statuses: Lead["status"][] = ["new", "contacted", "qualified", "processing", "completed", "closed"];
 const priorities: Lead["priority"][] = ["high", "standard", "completed"];
@@ -61,6 +62,12 @@ export function AdminConsole({ language, theme, setTheme }: AdminProps) {
   const [content, setContent] = useState<ContentRecord[]>([]);
   const [analytics, setAnalytics] = useState<AnalyticsEvent[]>([]);
   const [settings, setSettings] = useState<SiteSetting[]>([]);
+  const [educationLeads, setEducationLeads] = useState<EducationLead[]>([]);
+  const [educationAgents, setEducationAgents] = useState<EducationAgent[]>([]);
+  const [educationAgreements, setEducationAgreements] = useState<EducationCommissionAgreement[]>([]);
+  const [educationConsents, setEducationConsents] = useState<EducationAgentConsent[]>([]);
+  const [educationReferrals, setEducationReferrals] = useState<EducationReferral[]>([]);
+  const [educationError, setEducationError] = useState("");
   const [dataLoading, setDataLoading] = useState(false);
   const [dataError, setDataError] = useState("");
   const [query, setQuery] = useState("");
@@ -85,6 +92,15 @@ export function AdminConsole({ language, theme, setTheme }: AdminProps) {
     try {
       const [leadRows, contentRows, analyticsRows, settingRows] = await Promise.all([listLeads(), listSiteContent(), listAnalytics(), listSettings()]);
       setLeads(leadRows); setContent(contentRows); setContentRecordId((current) => current || contentRows[0]?.id || ""); setAnalytics(analyticsRows); setSettings(settingRows);
+      try {
+        const [studentRows, agentRows, agreementRows, consentRows, referralRows] = await Promise.all([
+          listEducationLeads(), listEducationAgents(), listEducationAgreements(), listEducationAgentConsents(), listEducationReferrals(),
+        ]);
+        setEducationLeads(studentRows); setEducationAgents(agentRows); setEducationAgreements(agreementRows);
+        setEducationConsents(consentRows); setEducationReferrals(referralRows); setEducationError("");
+      } catch (educationLoadError) {
+        setEducationError(educationLoadError instanceof Error ? educationLoadError.message : "Education referral records are unavailable.");
+      }
     } catch (error) {
       setDataError(error instanceof Error ? error.message : "The secure data service did not respond.");
     } finally { setDataLoading(false); }
@@ -148,7 +164,7 @@ export function AdminConsole({ language, theme, setTheme }: AdminProps) {
     } catch (error) { setAuthError(error instanceof Error ? error.message : "Sign in failed. Check your credentials and try again."); }
   };
   const handleLogout = async () => {
-    try { await signOut(); setAdminEmail(""); setAuthState("signedOut"); setLeads([]); setContent([]); setAnalytics([]); setSettings([]); }
+    try { await signOut(); setAdminEmail(""); setAuthState("signedOut"); setLeads([]); setContent([]); setAnalytics([]); setSettings([]); setEducationLeads([]); setEducationAgents([]); setEducationAgreements([]); setEducationConsents([]); setEducationReferrals([]); }
     catch (error) { setAuthError(error instanceof Error ? error.message : "Unable to end this session."); }
   };
 
@@ -169,6 +185,36 @@ export function AdminConsole({ language, theme, setTheme }: AdminProps) {
     const rows: (keyof Lead)[] = ["id", "created_at", "updated_at", "full_name", "email", "country", "nationality", "phone_country_code", "phone_number", "service_interest", "business_stage", "business_type", "has_existing_company", "company_country", "estimated_budget", "timeline", "visa_interest", "banking_interest", "contact_preference", "message", "priority", "status", "source", "language", "timezone", "utm_source", "utm_medium", "utm_campaign"];
     const csv = [rows.join(","), ...filteredLeads.map((lead) => rows.map((key) => csvEscape(lead[key])).join(","))].join("\r\n");
     downloadFile(`meridian-leads-${new Date().toISOString().slice(0, 10)}.csv`, csv, "text/csv;charset=utf-8");
+  };
+
+  const addEducationAgent = async (input: Pick<EducationAgent, "email" | "display_name">) => {
+    const agent = await createEducationAgent(input);
+    setEducationAgents((items) => [...items, agent].sort((a, b) => a.display_name.localeCompare(b.display_name)));
+  };
+
+  const addEducationAgreement = async (input: Omit<EducationCommissionAgreement, "id" | "created_at" | "is_active">) => {
+    const agreement = await createEducationAgreement(input);
+    setEducationAgreements((items) => [agreement, ...items]);
+  };
+
+  const assignStudentToAgent = async (input: {
+    studentLeadId: string; agentId: string; agreementId: string; consentedAt: string;
+    consentMethod: EducationAgentConsent["consent_method"]; evidenceReference: string; commissionBaseAmount: number;
+  }) => {
+    await assignEducationLead(input);
+    const [consents, referrals] = await Promise.all([listEducationAgentConsents(), listEducationReferrals()]);
+    setEducationConsents(consents);
+    setEducationReferrals(referrals);
+  };
+
+  const saveEducationReferral = async (id: string, changes: Pick<EducationReferral, "application_status" | "actual_received_amount" | "commission_base_amount" | "payment_status" | "payment_note">) => {
+    await updateEducationReferral(id, changes);
+    setEducationReferrals(await listEducationReferrals());
+  };
+
+  const revokeStudentAgentAccess = async (studentLeadId: string, agentId: string) => {
+    await revokeEducationAgentConsent(studentLeadId, agentId);
+    setEducationConsents(await listEducationAgentConsents());
   };
 
   const saveContentDraft = async () => {
@@ -230,6 +276,7 @@ export function AdminConsole({ language, theme, setTheme }: AdminProps) {
         {dataLoading ? <LoadingState/> : <>
           {section === "overview" && <OverviewSection leads={leads} analytics={analytics} performance={navPerformance} onOpen={setSelectedLead}/>}
           {section === "leads" && <LeadsSection leads={visibleLeads} total={filteredLeads.length} count={leads.length} page={page} pageCount={pageCount} setPage={setPage} query={query} setQuery={(value) => { setQuery(value); setPage(0); }} statusFilter={statusFilter} setStatusFilter={(value) => { setStatusFilter(value); setPage(0); }} sort={sort} setSort={setSort} exportLeads={exportLeads} onOpen={setSelectedLead}/>}
+          {section === "education" && <EducationAdminSection leads={educationLeads} agents={educationAgents} agreements={educationAgreements} consents={educationConsents} referrals={educationReferrals} error={educationError} onRefresh={() => void loadData()} onCreateAgent={addEducationAgent} onCreateAgreement={addEducationAgreement} onAssign={assignStudentToAgent} onUpdateReferral={saveEducationReferral} onRevoke={revokeStudentAgentAccess}/>}
           {section === "content" && <ContentSection content={content} currentRecord={currentRecord} recordId={contentRecordId} setRecordId={setContentRecordId} draft={contentDraft} setDraft={(value) => { setContentDraft(value); setContentSaved(false); }} saved={contentSaved} error={contentError} onSave={() => void saveContentDraft()} onCancel={() => { if (currentRecord) setContentDraft(currentRecord.content_value); setContentError(""); setContentSaved(false); }}/>}
           {section === "seo" && <SettingsSection title="SEO & metadata" subtitle="Review public site values configured in the secure settings store. Changes remain plain text or JSON values." settings={settings.filter((setting) => /seo|meta|title|description|canonical|robots/i.test(setting.setting_key))} editingId={editingSetting} setEditingId={setEditingSetting} draft={settingDraft} setDraft={setSettingDraft} error={settingError} onSave={saveSettingDraft}/>}
           {section === "settings" && <SettingsSection title="Site settings" subtitle="Edit configured settings. Sensitive access policy is not exposed or changed here." settings={settings.filter((setting) => !/seo|meta|title|description|canonical|robots/i.test(setting.setting_key))} editingId={editingSetting} setEditingId={setEditingSetting} draft={settingDraft} setDraft={setSettingDraft} error={settingError} onSave={saveSettingDraft}/>}

@@ -7,6 +7,7 @@
 4. In the SQL editor, insert that user's Auth UUID and email into `public.admin_users` using the provisioning example at the end of the migration.
 5. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in local/Cloudflare environment settings. Use only the publishable key.
 6. Test lead insert, denied anonymous lead reads, denied ordinary-user admin access, and permitted administrator access against RLS.
+7. Follow the monitoring and recovery procedure in `SECURITY.md`; alert the owner before the 400 MiB write-pause threshold.
 
 ## Cloudflare Pages
 1. Connect the repository.

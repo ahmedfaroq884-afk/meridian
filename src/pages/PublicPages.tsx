@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Language } from "../lib/types";
 import { t } from "../lib/i18n";
+import { serviceContent } from "../lib/serviceContent";
 import { useTimezoneGreeting } from "../components/SiteShell";
 import { AdSlot } from "../ads/AdSlot";
 
@@ -93,56 +94,15 @@ export function ServicesPage({ language }: PageProps) {
   </>;
 }
 
-const details: Record<string, { eyebrow: string; title: string; lead: string; section: string; body: string; list: string[]; note: string }> = {
-  "/company-setup": {
-    eyebrow: "Company formation & structuring", title: "A sound structure starts with the right questions.",
-    lead: "Understand the practical considerations around a Malaysian company presence, before committing to a setup.",
-    section: "Start with the shape of the business.", body: "The right structure depends on what the business will do, where decisions will be made, who will own it and what your plans are for the region. We help map those questions and coordinate the relevant conversations.",
-    list: ["Clarify the proposed activity, ownership and operating footprint.", "Consider basic formation sequence and information requirements.", "Coordinate independent legal, tax or company-secretarial advice where needed."],
-    note: "Registration and regulatory determinations are made by the relevant authorities. We facilitate and share information; we do not provide legal or tax advice or guarantee an outcome.",
-  },
-  "/pvip": {
-    eyebrow: "Long-term residency information", title: "PVIP, considered carefully.",
-    lead: "A clear introduction to programme information and practical questions around the Premium Visa Programme.",
-    section: "Information before application.", body: "Eligibility, terms and administrative requirements can change. We help you organise your questions around current public information and, where appropriate, coordinate a conversation with an independent immigration professional.",
-    list: ["Understand that programme criteria and decisions sit with the relevant authorities.", "Review the questions to discuss with a suitably qualified independent adviser.", "Coordinate next-step conversations only where appropriate."],
-    note: "We are not an immigration authority or law firm. A visa or residency approval cannot be promised or guaranteed.",
-  },
-  "/mm2h": {
-    eyebrow: "Residency programme information", title: "Make room for an informed MM2H decision.",
-    lead: "Explore public programme information and organise a sensible conversation about long-stay planning.",
-    section: "Your circumstances come first.", body: "MM2H terms and categories may change, and personal suitability depends on the requirements in force when you apply. Start with your objectives, timing and the questions you need an independent expert to answer.",
-    list: ["Identify the lifestyle and timing questions that matter to your plans.", "Prepare to discuss programme requirements with an independent professional.", "Coordinate information and conversations without representing an official programme."],
-    note: "We provide information and coordination only. We are not affiliated with programme administrators and cannot guarantee approval.",
-  },
-  "/banking": {
-    eyebrow: "Banking introductions", title: "Prepare for a banking conversation.",
-    lead: "Understand the questions institutions may ask and approach discussions with clearer expectations.",
-    section: "A bank makes its own assessment.", body: "Account opening, services and requirements are determined entirely by each financial institution. We can help organise an introduction or clarify general preparation questions where possible, without representing a bank or intermediary.",
-    list: ["Clarify your intended use, business activity and operating geography.", "Prepare a concise description of the proposed business or personal needs.", "Understand that institutions apply their own due diligence and acceptance criteria."],
-    note: "No banking partner or account outcome is represented or promised. Financial institutions make all decisions independently.",
-  },
-  "/market-entry": {
-    eyebrow: "Market entry & local context", title: "Take the time to understand the market.",
-    lead: "Bring local context, operating questions and professional conversations into one thoughtful early plan.",
-    section: "A better first map.", body: "Early market questions can shape a company's structure, local operating model and timing. A disciplined first review gives you a more useful basis for deciding what to investigate next.",
-    list: ["Define the customer, operating model and reason for entering Malaysia.", "Identify the local questions that need independent research or advice.", "Coordinate early conversations with relevant service providers where appropriate."],
-    note: "Market context is not a substitute for legal, tax, financial or regulatory advice. Decisions and outcomes remain yours and those of the relevant authorities.",
-  },
-};
-
 export function ServiceDetailPage({ language, path }: PageProps & { path: string }) {
-  const detail = details[path];
+  const detail = serviceContent[language][path as keyof typeof serviceContent.en];
   if (!detail) return <ServicesPage language={language}/>;
-  const serviceIndex = ({ "/company-setup": 1, "/pvip": 2, "/mm2h": 3, "/banking": 4, "/market-entry": 5 } as Record<string, number>)[path] ?? 1;
-  const serviceTitle = t(language, `serviceTitle${serviceIndex}`);
   return <>
-    <section className="page-hero"><div className="container"><span className="eyebrow">{t(language, "servicesEyebrow")}</span><h1 className="display">{serviceTitle}</h1><p className="lead">{t(language, "detailNextBody")}</p><div className="page-meta"><span>{t(language, "detailMeta")}</span><span>{t(language, "tagMalaysia")}</span></div></div></section>
+    <section className="page-hero"><div className="container"><span className="eyebrow">{detail.eyebrow}</span><h1 className="display">{detail.title}</h1><p className="lead">{detail.lead}</p><div className="page-meta"><span>{t(language, "servicePageMeta")}</span><span>{t(language, "tagMalaysia")}</span></div></div></section>
     <section className="container service-detail-grid">
-      <div className="detail-copy"><h2>{t(language, "detailNextTitle")}</h2><p>{t(language, "detailNextBody")}</p><h3>{t(language, "detailQuestions")}</h3><ul className="detail-list">{(["detailPoint1", "detailPoint2", "detailPoint3"] as const).map((key, index) => <li key={key}><span>0{index + 1}</span><span>{t(language, key)}</span></li>)}</ul></div>
-      <aside className="side-note"><span className="eyebrow">{t(language, "detailBoundaryLabel")}</span><h3>{t(language, "detailBoundaryTitle")}</h3><p>{t(language, "detailBoundaryBody")}</p><a className="button" href="/start">{t(language, "detailAction")} <span className="arrow">→</span></a></aside>
+      <div className="detail-copy"><h2>{detail.section}</h2><p>{detail.body}</p><h3>{t(language, "detailQuestions")}</h3><ul className="detail-list">{detail.points.map((point, index) => <li key={point}><span>0{index + 1}</span><span>{point}</span></li>)}</ul></div>
+      <aside className="side-note"><span className="eyebrow">{t(language, "ourRole")}</span><p>{detail.boundary}</p><a className="button" href={`/start?service=${encodeURIComponent(path.slice(1))}`}>{t(language, "beginEnquiry")} <span className="arrow">→</span></a></aside>
     </section>
-    <section className="content-section"><div className="container"><h2>{t(language, "detailNextTitle")}</h2><p>{t(language, "detailNextBody")}</p></div></section>
     <AdSlot language={language}/>
     <CTA language={language}/>
   </>;
